@@ -11,16 +11,25 @@ import {wp} from '../../utils/responsive.util';
 import ChatHeader from '../../components/ChatHeader';
 import SendIcon from '../../assets/images/svg/sent.svg';
 import BlankSpacer from '../../components/BlankSpacer';
+import messageItem from '../../components/messageItem';
 function ChatRoom() {
   return (
     <View style={styles.container}>
       <ChatHeader name="Soumen" imageUrl="https://i.pravatar.cc/500" />
       <View style={styles.container}>
         <FlatList
-          data={[1, 2, 3, 4, 5, 6]}
-          renderItem={() => {
-            return <Text>Hello</Text>;
-          }}
+          data={[
+            {message: 'Hi Soumen', isReceived: true},
+            {
+              message:
+                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.',
+              isReceived: false,
+            },
+            {message: 'You got the job', isReceived: true},
+            {message: 'Thanks', isReceived: false},
+            {message: 'Ok', isReceived: false},
+          ]}
+          renderItem={messageItem}
         />
       </View>
       <View style={styles.chatPadContainer}>
