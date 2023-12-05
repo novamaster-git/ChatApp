@@ -1,10 +1,11 @@
+import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
-import {Text, View} from 'react-native';
+import NavComponent from './stack';
 function App() {
   return (
-    <View>
-      <Text>Home</Text>
-    </View>
+    <NavigationContainer>
+      <NavComponent />
+    </NavigationContainer>
   );
 }
 export default App;
