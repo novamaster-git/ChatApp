@@ -8,15 +8,14 @@ const messageItem: ListRenderItem<any> = ({item}) => {
         styles.container,
         item.isReceived ? styles.receivedMessage : styles.sendedMessage,
       ]}>
-      <View style={styles.messageContainer}>
+      <View
+        style={[
+          styles.messageContainer,
+          item.isReceived ? styles.alignLeft : styles.alignRight,
+        ]}>
         <Text style={styles.textMessage}>{item.message}</Text>
-        <View
-          style={[
-            styles.flexRow,
-            item.isReceived ? styles.sendedMessage : styles.receivedMessage,
-          ]}>
-          <Text style={styles.clockText}>10:12 AM</Text>
-        </View>
+
+        <Text style={styles.clockText}>10:12 AM</Text>
       </View>
     </View>
   );
@@ -38,13 +37,20 @@ const styles = StyleSheet.create({
   receivedMessage: {
     justifyContent: 'flex-start',
   },
+  alignRight: {
+    alignItems: 'flex-end',
+  },
+  alignLeft: {
+    alignItems: 'flex-start',
+  },
   messageContainer: {
     maxWidth: '60%',
+    minWidth: '20%',
     backgroundColor: '#B2EBF2',
     paddingVertical: wp(2),
     paddingHorizontal: wp(3),
     borderRadius: wp(2),
-    alignItems: 'flex-end',
+    // alignItems: 'flex-end',
   },
   textMessage: {
     color: 'black',
