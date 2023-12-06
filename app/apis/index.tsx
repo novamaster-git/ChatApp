@@ -3,25 +3,13 @@ import {USERS} from '../constants/firestore.key';
 import CustomError from '../../customClasses/CustomError.class';
 async function getChatRoomsByIds(ids: Array<string>) {
   try {
-    // const querySnapshot = firestore().collection('userChats');
-    // // const data = await usersChatsCollection.get();
-    // const querySnapshot = await firestore()
-    //   .collection(collectionName)
-    //   .where(firestore.FieldPath.documentId(), 'in', selectedIds)
-    //   .get();
-    // // console.log(data._docs[0]);
-    // const docIds = data.docs.map(doc => doc._data);
     const querySnapshot = await firestore()
       .collection('userChats')
       .where(firestore.FieldPath.documentId(), 'in', ids)
       .get();
-
-    // Extracting selected documents from the query snapshot
-    // const selectedDocs = querySnapshot.docs.map(doc => ({
-    //   id: doc.id,
-    //   ...doc.data(),
-    // }));
-    return querySnapshot.docs;
+    // console.log(querySnapshot.docs.map(item => item._data));
+    // return querySnapshot.docs._data;
+    return querySnapshot.docs.map(item => item._data);
   } catch (error) {
     console.log(error);
   }
@@ -56,7 +44,7 @@ async function createNewUserInFirebase(username: string) {
     const data = {
       chats: [],
     };
-    const querySnapshot = await firestore().collection(USERS).doc(username);
+    const querySnapshot = firestore().collection(USERS).doc(username);
     await querySnapshot.set(data);
   } catch (error) {
     console.error(error);

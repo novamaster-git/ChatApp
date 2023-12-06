@@ -1,5 +1,5 @@
 export const SEND_MESSAGE = 'SEND_MESSAGE';
-
+export const SET_CHATS_LIST = 'SET_CHATS_LIST';
 // user actions
 export const GET_USER_DETAILS_BY_USERNAME = 'GET_USER_DETAILS_BY_USERNAME';
 export const GET_USER_DETAILS = 'GET_USER_DETAILS';
