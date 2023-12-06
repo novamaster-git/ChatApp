@@ -10,7 +10,9 @@ const UserItem: React.FC<PropsWithoutRef<{item: any}>> = ({item}: any) => {
       onPress={() => navigator.navigate('ChatRoom')}>
       <View style={styles.imageContainer}>
         <Image
-          source={{uri: 'https://i.pravatar.cc/500'}}
+          source={{
+            uri: `https://ui-avatars.com/api/?name=${item.RoomName}&background=random`,
+          }}
           style={styles.avatar}
         />
       </View>
@@ -43,6 +45,7 @@ const styles = StyleSheet.create({
     width: wp(12),
     height: wp(12),
     borderRadius: wp(7),
+    objectFit: 'cover',
   },
   nameText: {
     color: 'black',

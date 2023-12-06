@@ -1,4 +1,5 @@
 export const SEND_MESSAGE = 'SEND_MESSAGE';
+export const MAKE_A_NEW_FRIEND = 'MAKE_A_NEW_FRINED';
 export const SET_CHATS_LIST = 'SET_CHATS_LIST';
 // user actions
 export const GET_USER_DETAILS_BY_USERNAME = 'GET_USER_DETAILS_BY_USERNAME';

@@ -11,6 +11,7 @@ import {hp, wp} from '../../utils/responsive.util';
 import BlankSpacer from '../../components/BlankSpacer';
 import {useDispatch} from 'react-redux';
 import {checkOrCreateUserDetailsFirebase} from '../../redux/actions/userDetails.action';
+import CustomButton from '../../components/CustomButton';
 function UserAuth(): JSX.Element {
   const [username, setUserName] = useState('');
   const dispatch = useDispatch();
@@ -36,9 +37,7 @@ function UserAuth(): JSX.Element {
           value={username}
         />
         <BlankSpacer height={hp(5)} />
-        <TouchableOpacity style={styles.buttonContainer} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Let get started</Text>
-        </TouchableOpacity>
+        <CustomButton onPress={handleSubmit} title="Let's get started" />
       </View>
     </View>
   );
@@ -69,17 +68,5 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     color: 'white',
     paddingHorizontal: wp(5),
-  },
-  buttonContainer: {
-    fontSize: wp(7),
-    backgroundColor: '#FFFC00',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: wp(3),
-  },
-  buttonText: {
-    fontSize: wp(5),
-    fontWeight: '700',
-    color: 'black',
   },
 });
