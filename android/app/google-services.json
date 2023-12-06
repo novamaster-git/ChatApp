@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "860703212438",
+    "project_id": "chatapp-nova",
+    "storage_bucket": "chatapp-nova.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:860703212438:android:fa1f5a050db3041a2ed3b7",
+        "android_client_info": {
+          "package_name": "com.chatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvUqiu4RdzSRCA1G7a4f45esqjnk2YzLs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

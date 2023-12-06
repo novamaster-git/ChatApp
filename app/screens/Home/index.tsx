@@ -1,8 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {wp} from '../../utils/responsive.util';
 import UserItem from '../../components/UserItem';
+import {useDispatch} from 'react-redux';
+
 function Home() {
+  const dispatch = useDispatch();
+  useEffect(() => {}, []);
   return (
     <View style={styles.container}>
       <View style={styles.componentContainer}>
@@ -10,7 +14,7 @@ function Home() {
       </View>
       <View style={styles.componentContainer}>
         <FlatList
-          data={[1, 2, 3, 4, 5]}
+          data={[1, 2, 3]}
           renderItem={({item}) => {
             return <UserItem item={item} />;
           }}

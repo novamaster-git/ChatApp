@@ -1,6 +1,6 @@
 import {put, takeEvery, all} from 'redux-saga/effects';
-import {SEND_MESSAGE} from '../constants/reducersActions.const';
-import {sendMessage} from './actions/chat.actions';
+import {SEND_MESSAGE} from '../../constants/reducersActions.const';
+import {sendMessage} from '../actions/chat.actions';
 
 // worker
 function* incrementAsync(action: any) {
@@ -12,8 +12,8 @@ function* watchSendMessageAsync() {
   yield takeEvery(SEND_MESSAGE, incrementAsync);
 }
 
-function* rootSaga() {
+function* rootChatSaga() {
   yield all([watchSendMessageAsync()]);
 }
 
-export {rootSaga};
+export {rootChatSaga};

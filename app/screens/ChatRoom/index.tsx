@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -7,11 +7,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+
 import {wp} from '../../utils/responsive.util';
 import ChatHeader from '../../components/ChatHeader';
 import SendIcon from '../../assets/images/svg/sent.svg';
 import BlankSpacer from '../../components/BlankSpacer';
 import messageItem from '../../components/messageItem';
+
 function ChatRoom() {
   return (
     <View style={styles.container}>

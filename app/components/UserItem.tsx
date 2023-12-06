@@ -15,7 +15,7 @@ const UserItem: React.FC<PropsWithoutRef<{item: any}>> = ({item}: any) => {
         />
       </View>
       <View style={styles.nameContainer}>
-        <Text style={styles.nameText}>Sumit Rana {item}</Text>
+        <Text style={styles.nameText}>{item.RoomName}</Text>
       </View>
     </TouchableOpacity>
   );
