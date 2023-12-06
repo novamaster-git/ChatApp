@@ -2,11 +2,14 @@ import React, {useEffect} from 'react';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {wp} from '../../utils/responsive.util';
 import UserItem from '../../components/UserItem';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 function Home() {
   const dispatch = useDispatch();
-  useEffect(() => {}, []);
+  const userDetails = useSelector(state => state.UserReducer?.username);
+  useEffect(() => {
+    console.log(userDetails);
+  }, [userDetails]);
   return (
     <View style={styles.container}>
       <View style={styles.componentContainer}>

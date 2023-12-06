@@ -44,9 +44,6 @@ function SplashStack() {
 function NavComponent() {
   const dispatch = useDispatch();
   const authStatus = useSelector((state: any) => state.UserReducer.loginStatus);
-  // const loading = useSelector(
-  //   (state: any) => state.UserReducer.userDetailsUpdating,
-  // );
   useEffect(() => {
     dispatch(checkAndUpdateUserAuthStatus());
   }, [dispatch]);

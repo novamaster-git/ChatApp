@@ -1,8 +1,8 @@
 import {
   SET_USER_AUTH_STATUS_LOGOUT,
+  SET_USER_DETAILS_TO_REDUX,
   SET_USER_DETAILS_UPDATED,
   SET_USER_DETAILS_UPDATING,
-  SET_USER_NAME,
 } from '../../constants/reducersActions.const';
 
 export type UserStateType = {
@@ -22,8 +22,13 @@ export default function UserReducer(
   action: any,
 ) {
   switch (action.type) {
-    case SET_USER_NAME:
-      return {...state, username: action.payload, loginStatus: 'LOGGED_IN'};
+    case SET_USER_DETAILS_TO_REDUX:
+      return {
+        ...state,
+        username: action.payload.username,
+        userDetails: action.payload.userDetails,
+        loginStatus: 'LOGGED_IN',
+      };
     case SET_USER_DETAILS_UPDATING:
       return {...state, userDetailsUpdating: true};
     case SET_USER_DETAILS_UPDATED:

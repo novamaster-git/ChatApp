@@ -10,7 +10,7 @@ import {
 import {hp, wp} from '../../utils/responsive.util';
 import BlankSpacer from '../../components/BlankSpacer';
 import {useDispatch} from 'react-redux';
-import {setUserNameFromAuthScreen} from '../../redux/actions/userDetails.action';
+import {checkOrCreateUserDetailsFirebase} from '../../redux/actions/userDetails.action';
 function UserAuth(): JSX.Element {
   const [username, setUserName] = useState('');
   const dispatch = useDispatch();
@@ -19,8 +19,7 @@ function UserAuth(): JSX.Element {
       Alert.alert('Invalid Input', 'Please enter an username');
       return;
     }
-    dispatch(setUserNameFromAuthScreen(username));
-    console.log(username);
+    dispatch(checkOrCreateUserDetailsFirebase(username));
   };
   return (
     <View style={styles.container}>
