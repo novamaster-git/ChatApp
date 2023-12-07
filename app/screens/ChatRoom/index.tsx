@@ -10,7 +10,7 @@ import {
   Text,
 } from 'react-native';
 
-import {hp, wp} from '../../utils/responsive.util';
+import {wp} from '../../utils/responsive.util';
 import ChatHeader from '../../components/ChatHeader';
 import SendIcon from '../../assets/images/svg/sent.svg';
 import BlankSpacer from '../../components/BlankSpacer';
@@ -23,6 +23,7 @@ import {
   sendMessageSaga,
 } from '../../redux/actions/chat.actions';
 import moment from 'moment';
+import {reverseArr} from '../../utils/array.util';
 
 function ChatRoom({route}: any) {
   const [userWrittenMessage, setUserWrittenMessage] = useState('');
@@ -32,7 +33,8 @@ function ChatRoom({route}: any) {
   const isSendingMessage = useSelector(
     (state: any) => state.ChatReducer?.sendingAMessage,
   );
-  const roomChats = useSelector(
+
+  const roomChats: Array<any> = useSelector(
     (state: any) => state?.ChatReducer?.currentRoomChats,
   );
   const dispatch = useDispatch();
@@ -80,7 +82,11 @@ function ChatRoom({route}: any) {
       />
       {roomChats.length !== 0 ? (
         <View style={styles.container}>
-          <FlatList data={roomChats} renderItem={messageItem} />
+          <FlatList
+            data={reverseArr(roomChats)}
+            renderItem={messageItem}
+            inverted
+          />
         </View>
       ) : (
         <View style={styles.noMessagesYetContainer}>

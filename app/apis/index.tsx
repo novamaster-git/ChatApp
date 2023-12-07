@@ -24,8 +24,7 @@ async function getUserDetailsByUsernameFromFirebase(username: string) {
       .collection(USERS)
       .doc(username)
       .get();
-    // console.log(querySnapshot._data);
-    return querySnapshot._data;
+    return querySnapshot?._data;
   } catch (error) {
     console.error(error);
     throw error;
@@ -56,14 +55,12 @@ async function createNewChatRoom(myUsername: string, friendsUserName: string) {
       RoomName: `${myUsername}_${friendsUserName}`,
       messages: [],
     });
-    console.log(docRef, 'DOCREf');
     return docRef;
   } catch (error) {}
 }
 async function addRoomToUserChatList(username: string, roomId: string) {
   try {
     const querySnapshot = firestore().collection(USERS).doc(username);
-    // console.log(querySnapshot, 'OSS');
     await querySnapshot.update({
       chats: firestore.FieldValue.arrayUnion(roomId),
     });
