@@ -7,15 +7,22 @@ const UserItem: React.FC<PropsWithoutRef<{item: any}>> = ({item}: any) => {
   return (
     <TouchableOpacity
       style={styles.itemContainer}
-      onPress={() => navigator.navigate('ChatRoom')}>
+      onPress={() => {
+        navigator.navigate('ChatRoom', {
+          roomId: item?.id,
+          roomName: item?.data.RoomName,
+        });
+      }}>
       <View style={styles.imageContainer}>
         <Image
-          source={{uri: 'https://i.pravatar.cc/500'}}
+          source={{
+            uri: `https://ui-avatars.com/api/?name=${item.data.RoomName}&background=random`,
+          }}
           style={styles.avatar}
         />
       </View>
       <View style={styles.nameContainer}>
-        <Text style={styles.nameText}>Sumit Rana {item}</Text>
+        <Text style={styles.nameText}>{item.data.RoomName}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -43,6 +50,7 @@ const styles = StyleSheet.create({
     width: wp(12),
     height: wp(12),
     borderRadius: wp(7),
+    objectFit: 'cover',
   },
   nameText: {
     color: 'black',
