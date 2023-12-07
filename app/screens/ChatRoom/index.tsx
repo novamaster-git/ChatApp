@@ -57,7 +57,7 @@ function ChatRoom({route}: any) {
         unsubscribe(); // to unsub the firebase snapshot listener
       };
     }
-  }, [roomId]);
+  }, [roomId, dispatch, username]);
   const handleMessageSubmit = () => {
     if (userWrittenMessage.length === 0) {
       Alert.alert('Please enter a message to send');

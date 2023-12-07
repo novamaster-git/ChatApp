@@ -39,22 +39,22 @@ function Home() {
     (state: any) => state.ChatReducer?.chats,
   );
 
-  async function findRoomsById(data: any) {
-    try {
-      const roomsList = await getChatRoomsByIds(data); // gets the rooms from firebase by ids
-      dispatch(setChatLists(roomsList)); // sets the new chat list
-      dispatch(setChatListsSuccess());
-    } catch (error) {
-      Alert.alert('Something Went wrong');
-    }
-  }
-
   useEffect(() => {
+    async function findRoomsById(data: any) {
+      try {
+        const roomsList = await getChatRoomsByIds(data); // gets the rooms from firebase by ids
+        dispatch(setChatLists(roomsList)); // sets the new chat list
+        dispatch(setChatListsSuccess());
+      } catch (error) {
+        Alert.alert('Something Went wrong');
+      }
+    }
     if (username) {
       // checks and calles the callback when ever the room is updated
       const unsubscribe = subscribeToUserDetailsChanges(username, data => {
         // dispatch(setChatLists(data));
-        if (data?.chats === undefined) {
+        console.log(data?.chats, 'KOLS');
+        if (data?.chats.length === 0) {
           dispatch(setChatLists([])); // if there is no chat rooms then it sets the home screen chat list blank
           dispatch(setChatListsSuccess());
         } else {
@@ -66,7 +66,8 @@ function Home() {
         unsubscribe(); // to unsub the firebase snapshot listener
       };
     }
-  }, [username]);
+  }, [username, dispatch]);
+  // new chat creation button ui
   const newChatComponent = () => {
     return isMakingAFriend ? (
       <ActivityIndicator size={'large'} color={'white'} />
@@ -74,9 +75,11 @@ function Home() {
       <NewChatIcon height={wp(10)} width={wp(10)} color="white" />
     );
   };
+  // handler for new chat button
   const handleNewChat = () => {
     setModalVisible(true);
   };
+  // handles the find button of the user search modal
   const handleFindButton = () => {
     if (friendsUsername === username?.toLowerCase()) {
       Alert.alert('Own username not allowed');
@@ -154,6 +157,7 @@ function Home() {
               placeholder="Username"
               onChangeText={setFriendsUsername}
               value={friendsUsername}
+              placeholderTextColor={'grey'}
             />
             <BlankSpacer height={wp(6)} />
             <CustomButton

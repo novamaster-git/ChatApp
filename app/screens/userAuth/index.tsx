@@ -29,7 +29,7 @@ function UserAuth(): JSX.Element {
           placeholder="Enter your username"
           style={styles.textInput}
           placeholderTextColor={'#C5CAE9'}
-          onChangeText={setUserName}
+          onChangeText={text => setUserName(text.trim())}
           value={username}
         />
         <BlankSpacer height={hp(5)} />

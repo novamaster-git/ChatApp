@@ -61,5 +61,6 @@ const styles = StyleSheet.create({
   },
   clockText: {
     fontSize: wp(2),
+    color: 'black',
   },
 });
