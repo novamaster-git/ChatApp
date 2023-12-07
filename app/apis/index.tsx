@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import {USERS} from '../constants/firestore.key';
+import {USERCHATS, USERS} from '../constants/firestore.key';
 import CustomError from '../../customClasses/CustomError.class';
 async function getChatRoomsByIds(ids: Array<string>) {
   try {
@@ -51,8 +51,32 @@ async function createNewUserInFirebase(username: string) {
     throw error;
   }
 }
+async function createNewChatRoom(myUsername: string, friendsUserName: string) {
+  try {
+    const querySnapshot = firestore().collection(USERCHATS);
+    const docRef = await querySnapshot.add({
+      RoomName: `${myUsername}_${friendsUserName}`,
+      messages: {},
+    });
+    console.log(docRef, 'DOCREf');
+    return docRef;
+  } catch (error) {}
+}
+async function addRoomToUserChatList(username: string, roomId: string) {
+  try {
+    const querySnapshot = firestore().collection(USERS).doc(username);
+    // console.log(querySnapshot, 'OSS');
+    await querySnapshot.update({
+      chats: firestore.FieldValue.arrayUnion(roomId),
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
 export {
   getChatRoomsByIds,
   getUserDetailsByUsernameFromFirebase,
   createNewUserInFirebase,
+  createNewChatRoom,
+  addRoomToUserChatList,
 };

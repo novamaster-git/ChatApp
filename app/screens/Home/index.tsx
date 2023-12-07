@@ -20,6 +20,9 @@ import {makeaFriend} from '../../redux/actions/chat.actions';
 function Home() {
   const dispatch = useDispatch();
   const username = useSelector((state: any) => state.UserReducer?.username);
+  const isMakingAFriend: boolean = useSelector(
+    (state: any) => state.ChatReducer?.isMakeingAFrined,
+  );
   const [friendsUsername, setFriendsUsername] = useState<string>('');
   const [modalVisible, setModalVisible] = useState(false);
   const chatLists: Array<any> = useSelector(
@@ -32,12 +35,18 @@ function Home() {
     setModalVisible(true);
   };
   const handleFindButton = () => {
-    console.log(username);
     if (friendsUsername === username?.toLowerCase()) {
       Alert.alert('Own username not allowed');
       return;
     }
-    dispatch(makeaFriend(friendsUsername?.toLowerCase()));
+    dispatch(
+      makeaFriend({
+        myUsername: username,
+        friendsUsername: friendsUsername?.toLowerCase(),
+      }),
+    );
+    setFriendsUsername('');
+    setModalVisible(false);
   };
   return (
     <>
@@ -48,7 +57,7 @@ function Home() {
         </View>
 
         <View style={[styles.componentContainer, styles.container]}>
-          {chatLists.length !== 0 ? (
+          {chatLists ? (
             <FlatList
               data={chatLists}
               renderItem={({item}) => {
@@ -98,6 +107,7 @@ function Home() {
             />
             <BlankSpacer height={wp(6)} />
             <CustomButton
+              isLoading={isMakingAFriend}
               onPress={handleFindButton}
               title="Find"
               style={styles.modalButtonStyle}

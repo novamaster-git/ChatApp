@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  ActivityIndicator,
   StyleSheet,
   Text,
   TextStyle,
@@ -12,16 +13,25 @@ export type CustomButtonPropsType = {
   title: string;
   style?: ViewStyle;
   textStyle?: TextStyle;
+  isLoading?: boolean;
 };
 function CustomButton({
   onPress = () => {},
   title,
   style,
   textStyle,
+  isLoading = false,
 }: CustomButtonPropsType) {
   return (
-    <TouchableOpacity style={[styles.buttonContainer, style]} onPress={onPress}>
-      <Text style={[styles.buttonText, textStyle]}>{title ?? 'No Text'}</Text>
+    <TouchableOpacity
+      style={[styles.buttonContainer, style]}
+      onPress={onPress}
+      disabled={isLoading}>
+      {isLoading ? (
+        <ActivityIndicator size={'small'} color={textStyle?.color} />
+      ) : (
+        <Text style={[styles.buttonText, textStyle]}>{title ?? 'No Text'}</Text>
+      )}
     </TouchableOpacity>
   );
 }

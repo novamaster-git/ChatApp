@@ -3,8 +3,18 @@ import {
   MAKE_A_NEW_FRIEND,
   SEND_MESSAGE,
 } from '../../constants/reducersActions.const';
-import {sendMessage} from '../actions/chat.actions';
-import {getUserDetailsByUsernameFromFirebase} from '../../apis';
+import {
+  makeingAFriendStarted,
+  makingAFriendEnd,
+  sendMessage,
+  setChatLists,
+} from '../actions/chat.actions';
+import {
+  addRoomToUserChatList,
+  createNewChatRoom,
+  getChatRoomsByIds,
+  getUserDetailsByUsernameFromFirebase,
+} from '../../apis';
 import {Alert} from 'react-native';
 
 // worker
@@ -12,15 +22,53 @@ function* incrementAsync(action: any) {
   yield put(sendMessage(action.payload));
 }
 function* makeaFriend(action: any) {
-  const userDetails = yield call(
-    getUserDetailsByUsernameFromFirebase,
-    action.payload,
-  );
-  if (userDetails === undefined) {
-    Alert.alert('No Person Found');
-    return;
+  // getting friends details from firebase
+  try {
+    yield put(makeingAFriendStarted());
+    const friendsUserDetails = yield call(
+      getUserDetailsByUsernameFromFirebase,
+      action.payload.friendsUsername,
+    );
+    // checking the friend exist or not
+    if (friendsUserDetails === undefined) {
+      yield put(makingAFriendEnd());
+      Alert.alert('No Person Found'); // If there is no user then it shows warning
+      return;
+    }
+    // this creates new room and returns the room ref
+    const createdRoomRef = yield call(
+      createNewChatRoom,
+      action.payload.myUsername,
+      action.payload.friendsUsername,
+    );
+    //adds the room id to my userdetails chats list
+    yield call(
+      addRoomToUserChatList,
+      action.payload.myUsername,
+      createdRoomRef?.id,
+    );
+    // fetches my user details from firebase
+    const myUserDetails = yield call(
+      getUserDetailsByUsernameFromFirebase,
+      action.payload.myUsername,
+    );
+    if (myUserDetails?.chats === undefined) {
+      yield put(setChatLists([])); // if there is no chat rooms then it sets the home screen chat list blank
+    } else {
+      console.log(myUserDetails?.chats, 'myUserDetails?.chats');
+      // update my home screens chat list with new chatroom
+      const chatLists: Array<any> = yield call(
+        getChatRoomsByIds,
+        myUserDetails?.chats,
+      );
+      yield put(setChatLists(chatLists)); // sets the new chat list
+    }
+    yield put(makingAFriendEnd());
+  } catch (error) {
+    yield put(makingAFriendEnd());
+    throw error;
   }
-  Alert.alert('User found');
+
   // proseed to chatroom
 }
 
