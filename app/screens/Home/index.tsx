@@ -17,6 +17,7 @@ import NewChatIcon from '../../assets/images/svg/newChat.svg';
 import BlankSpacer from '../../components/BlankSpacer';
 import CustomButton from '../../components/CustomButton';
 import {makeaFriend} from '../../redux/actions/chat.actions';
+import NoChatIcon from '../../assets/images/svg/noChats.svg';
 function Home() {
   const dispatch = useDispatch();
   const username = useSelector((state: any) => state.UserReducer?.username);
@@ -66,7 +67,8 @@ function Home() {
             />
           ) : (
             <View style={styles.containerWithCenter}>
-              <Text style={styles.warningText}>No Messages Yet</Text>
+              <NoChatIcon height={wp(20)} width={wp(20)} />
+              <Text style={styles.warningText}>No Chats Yet</Text>
             </View>
           )}
         </View>

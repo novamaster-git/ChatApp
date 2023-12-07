@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Text,
 } from 'react-native';
 
 import {wp} from '../../utils/responsive.util';
@@ -16,6 +17,7 @@ import BlankSpacer from '../../components/BlankSpacer';
 import messageItem from '../../components/messageItem';
 import {useDispatch, useSelector} from 'react-redux';
 import {subscribeToRoomChatChanges} from '../../apis';
+import NoMessagesIcon from '../../assets/images/svg/noMessages.svg';
 import {
   getRoomChatsSuccess,
   sendMessageSaga,
@@ -76,15 +78,23 @@ function ChatRoom({route}: any) {
         name={roomName}
         imageUrl={`https://ui-avatars.com/api/?name=${roomName}&background=random`}
       />
-      <View style={styles.container}>
-        <FlatList data={roomChats ?? [1, 2, 3]} renderItem={messageItem} />
-      </View>
+      {false ? (
+        <View style={styles.container}>
+          <FlatList data={roomChats} renderItem={messageItem} />
+        </View>
+      ) : (
+        <View style={styles.noMessagesYetContainer}>
+          <NoMessagesIcon height={wp(20)} width={wp(20)} />
+          <Text style={styles.noMessageWarning}>No Messages Yet</Text>
+        </View>
+      )}
       <View style={styles.chatPadContainer}>
         <TextInput
           style={styles.chatInput}
           placeholder="Enter New Message"
           onChangeText={setUserWrittenMessage}
           value={userWrittenMessage}
+          placeholderTextColor={'grey'}
         />
         <BlankSpacer width={wp(2)} />
         <TouchableOpacity
@@ -107,6 +117,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
+  noMessagesYetContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noMessageWarning: {
+    color: 'black',
+    fontSize: wp(5),
+  },
   chatPadContainer: {
     width: '100%',
     paddingVertical: wp(2),
@@ -117,6 +136,7 @@ const styles = StyleSheet.create({
   chatInput: {
     fontSize: wp(4),
     backgroundColor: 'white',
+    color: 'black',
     flex: 6,
     borderRadius: wp(3),
     paddingHorizontal: wp(2),
