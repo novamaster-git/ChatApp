@@ -1,12 +1,25 @@
 import {
+  GET_ROOM_CHATS_FAILED,
+  GET_ROOM_CHATS_REQUEST,
+  GET_ROOM_CHATS_SUCCESS,
   MAKE_A_NEW_FRIEND,
   MAKING_A_NEW_FRIEND,
   MAKING_A_NEW_FRIEND_DONE,
   SET_CHATS_LIST,
 } from '../../constants/reducersActions.const';
 
-export type ChatStateType = {chats: Array<any>; isMakeingAFrined: boolean};
-const initialState: ChatStateType = {chats: [], isMakeingAFrined: false};
+export type ChatStateType = {
+  chats: Array<any>;
+  isMakeingAFrined: boolean;
+  currentRoomChats: Array<any>;
+  isCurrentRoomChatsLoading: boolean;
+};
+const initialState: ChatStateType = {
+  chats: [],
+  isMakeingAFrined: false,
+  currentRoomChats: [],
+  isCurrentRoomChatsLoading: false,
+};
 export default function ChatReducer(
   state: ChatStateType = initialState,
   action: any,
@@ -14,6 +27,19 @@ export default function ChatReducer(
   switch (action.type) {
     case SET_CHATS_LIST:
       return {...state, chats: action.payload};
+    case GET_ROOM_CHATS_REQUEST:
+      return {...state, isCurrentRoomChatsLoading: true};
+    case GET_ROOM_CHATS_SUCCESS:
+      return {
+        ...state,
+        currentRoomChats: action.payload,
+        isCurrentRoomChatsLoading: false,
+      };
+    case GET_ROOM_CHATS_FAILED:
+      return {
+        ...state,
+        isCurrentRoomChatsLoading: false,
+      };
     case MAKING_A_NEW_FRIEND_DONE:
       return {...state, isMakeingAFrined: false};
     case MAKING_A_NEW_FRIEND:

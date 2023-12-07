@@ -13,26 +13,47 @@ import ChatHeader from '../../components/ChatHeader';
 import SendIcon from '../../assets/images/svg/sent.svg';
 import BlankSpacer from '../../components/BlankSpacer';
 import messageItem from '../../components/messageItem';
+import {useDispatch, useSelector} from 'react-redux';
+// import {getRoomChatsRequestSaga} from '../../redux/actions/chat.actions';
+import {subscribeToRoomChatChanges} from '../../apis';
+import {getRoomChatsSuccess} from '../../redux/actions/chat.actions';
 
-function ChatRoom() {
+function ChatRoom({route}: any) {
+  const roomId = route?.params.roomId;
+  const roomName = route?.params.roomName;
+  const username = useSelector((state: any) => state.UserReducer?.username);
+  const roomChats = useSelector(
+    (state: any) => state?.ChatReducer?.currentRoomChats,
+  );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (roomId) {
+      console.log(roomId, 'ROOMID');
+      const unsubscribe = subscribeToRoomChatChanges(roomId, data => {
+        dispatch(
+          getRoomChatsSuccess(
+            data.messages.map(item => {
+              return {
+                ...item,
+                isReceived: item.sender !== username,
+              };
+            }),
+          ),
+        );
+      });
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [roomId]);
   return (
     <View style={styles.container}>
-      <ChatHeader name="Soumen" imageUrl="https://i.pravatar.cc/500" />
+      <ChatHeader
+        name={roomName}
+        imageUrl={`https://ui-avatars.com/api/?name=${roomName}&background=random`}
+      />
       <View style={styles.container}>
-        <FlatList
-          data={[
-            {message: 'Hi Soumen', isReceived: true},
-            {
-              message:
-                'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.',
-              isReceived: false,
-            },
-            {message: 'You got the job', isReceived: true},
-            {message: 'Thanks', isReceived: false},
-            {message: 'Ok', isReceived: false},
-          ]}
-          renderItem={messageItem}
-        />
+        <FlatList data={roomChats ?? [1, 2, 3]} renderItem={messageItem} />
       </View>
       <View style={styles.chatPadContainer}>
         <TextInput style={styles.chatInput} placeholder="Enter New Message" />

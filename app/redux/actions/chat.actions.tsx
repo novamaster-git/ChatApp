@@ -1,4 +1,8 @@
 import {
+  GET_ROOM_CHATS_FAILED,
+  GET_ROOM_CHATS_REQUEST,
+  GET_ROOM_CHATS_REQUEST_SAGA,
+  GET_ROOM_CHATS_SUCCESS,
   MAKE_A_NEW_FRIEND,
   MAKING_A_NEW_FRIEND,
   MAKING_A_NEW_FRIEND_DONE,
@@ -23,4 +27,19 @@ export const makeingAFriendStarted = () => ({
 });
 export const makingAFriendEnd = () => ({
   type: MAKING_A_NEW_FRIEND_DONE,
+});
+export const getRoomChatsRequest = () => ({
+  type: GET_ROOM_CHATS_REQUEST,
+});
+export const getRoomChatsSuccess = (payload: any) => ({
+  type: GET_ROOM_CHATS_SUCCESS,
+  payload,
+});
+export const getRoomChatsFailed = (payload: any) => ({
+  type: GET_ROOM_CHATS_FAILED,
+  payload,
+});
+export const getRoomChatsRequestSaga = (payload: any) => ({
+  type: GET_ROOM_CHATS_REQUEST_SAGA,
+  payload,
 });

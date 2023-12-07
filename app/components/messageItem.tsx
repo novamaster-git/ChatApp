@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, ListRenderItem, StyleSheet} from 'react-native';
 import {wp} from '../utils/responsive.util';
+import moment from 'moment';
 const messageItem: ListRenderItem<any> = ({item}) => {
   return (
     <View
@@ -15,7 +16,9 @@ const messageItem: ListRenderItem<any> = ({item}) => {
         ]}>
         <Text style={styles.textMessage}>{item.message}</Text>
 
-        <Text style={styles.clockText}>10:12 AM</Text>
+        <Text style={styles.clockText}>
+          {moment(item?.time).format('HH:MM a')}
+        </Text>
       </View>
     </View>
   );

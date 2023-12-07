@@ -1,9 +1,13 @@
 import {put, takeEvery, all, call, takeLatest} from 'redux-saga/effects';
 import {
+  GET_ROOM_CHATS_REQUEST_SAGA,
   MAKE_A_NEW_FRIEND,
   SEND_MESSAGE,
 } from '../../constants/reducersActions.const';
 import {
+  getRoomChatsFailed,
+  getRoomChatsRequest,
+  getRoomChatsSuccess,
   makeingAFriendStarted,
   makingAFriendEnd,
   sendMessage,
@@ -13,6 +17,7 @@ import {
   addRoomToUserChatList,
   createNewChatRoom,
   getChatRoomsByIds,
+  getRoomChatsFromFireStore,
   getUserDetailsByUsernameFromFirebase,
 } from '../../apis';
 import {Alert} from 'react-native';
@@ -68,13 +73,24 @@ function* makeaFriend(action: any) {
     yield put(makingAFriendEnd());
     throw error;
   }
+}
 
-  // proseed to chatroom
+function* getChatRoomChats(action: any) {
+  try {
+    yield put(getRoomChatsRequest());
+    const chats = yield call(getRoomChatsFromFireStore, action.payload);
+    yield put(getRoomChatsSuccess(chats));
+  } catch (error) {
+    yield put(getRoomChatsFailed(error));
+  }
 }
 
 // watcher
 function* watchSendMessageAsync() {
   yield takeEvery(SEND_MESSAGE, incrementAsync);
+}
+function* watchRoomChatRequestsAsync() {
+  yield takeLatest(GET_ROOM_CHATS_REQUEST_SAGA, getChatRoomChats);
 }
 
 function* watchMakeaFrinedAsync() {
@@ -82,7 +98,11 @@ function* watchMakeaFrinedAsync() {
 }
 
 function* rootChatSaga() {
-  yield all([watchSendMessageAsync(), watchMakeaFrinedAsync()]);
+  yield all([
+    watchSendMessageAsync(),
+    watchMakeaFrinedAsync(),
+    watchRoomChatRequestsAsync(),
+  ]);
 }
 
 export {rootChatSaga};

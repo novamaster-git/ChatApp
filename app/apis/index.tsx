@@ -9,7 +9,7 @@ async function getChatRoomsByIds(ids: Array<string>) {
       .get();
     // console.log(querySnapshot.docs.map(item => item._data));
     // return querySnapshot.docs._data;
-    return querySnapshot.docs.map(item => item._data);
+    return querySnapshot.docs.map(item => ({data: item?._data, id: item.id}));
   } catch (error) {
     console.log(error);
   }
@@ -56,7 +56,7 @@ async function createNewChatRoom(myUsername: string, friendsUserName: string) {
     const querySnapshot = firestore().collection(USERCHATS);
     const docRef = await querySnapshot.add({
       RoomName: `${myUsername}_${friendsUserName}`,
-      messages: {},
+      messages: [],
     });
     console.log(docRef, 'DOCREf');
     return docRef;
@@ -73,10 +73,51 @@ async function addRoomToUserChatList(username: string, roomId: string) {
     console.log(error);
   }
 }
+async function getRoomChatsFromFireStore(roomId: string) {
+  try {
+    const querySnapshot = firestore().collection(USERCHATS).doc(roomId);
+    const result = await querySnapshot.get();
+    return result?._data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+// Function to subscribe to real-time changes in a Firestore collection
+const subscribeToRoomChatChanges = (
+  roomId: string,
+  callback: (data: any) => void = () => {},
+) => {
+  const documentRef = firestore().collection(USERCHATS).doc(roomId);
+
+  // Subscribe to real-time changes using onSnapshot
+  const unsubscribe = documentRef.onSnapshot(
+    documentSnapshot => {
+      if (documentSnapshot.exists) {
+        // Document exists, extract document data
+        const data: any = documentSnapshot.data();
+        callback(data);
+      } else {
+        // Document does not exist
+        callback(null);
+      }
+    },
+    error => {
+      console.error('Error subscribing to document changes:', error);
+    },
+  );
+
+  // Return an unsubscribe function to stop listening for changes
+  return unsubscribe;
+};
+
 export {
   getChatRoomsByIds,
   getUserDetailsByUsernameFromFirebase,
   createNewUserInFirebase,
   createNewChatRoom,
   addRoomToUserChatList,
+  getRoomChatsFromFireStore,
+  subscribeToRoomChatChanges,
 };
