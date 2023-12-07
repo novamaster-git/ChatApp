@@ -10,7 +10,9 @@ import {
   SEND_MESSAGE_REQUESTED,
   SEND_MESSAGE_SAGA,
   SEND_MESSAGE_SUCCCESS,
-  SET_CHATS_LIST,
+  SET_CHATS_LIST_FAILED,
+  SET_CHATS_LIST_REQUEST,
+  SET_CHATS_LIST_SUCCESS,
 } from '../../constants/reducersActions.const';
 
 export const sendMessageSaga = (payload: any) => ({
@@ -28,7 +30,14 @@ export const sendMessageRequested = () => ({
   type: SEND_MESSAGE_REQUESTED,
 });
 export const setChatLists = (payload: any) => ({
-  type: SET_CHATS_LIST,
+  type: SET_CHATS_LIST_REQUEST,
+  payload,
+});
+export const setChatListsSuccess = () => ({
+  type: SET_CHATS_LIST_SUCCESS,
+});
+export const setchatlistFailed = (payload: any) => ({
+  type: SET_CHATS_LIST_FAILED,
   payload,
 });
 export const makeaFriend = (payload: any) => ({

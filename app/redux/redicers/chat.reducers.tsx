@@ -7,7 +7,9 @@ import {
   SEND_MESSAGE_ERROR,
   SEND_MESSAGE_REQUESTED,
   SEND_MESSAGE_SUCCCESS,
-  SET_CHATS_LIST,
+  SET_CHATS_LIST_FAILED,
+  SET_CHATS_LIST_REQUEST,
+  SET_CHATS_LIST_SUCCESS,
 } from '../../constants/reducersActions.const';
 
 export type ChatStateType = {
@@ -16,6 +18,7 @@ export type ChatStateType = {
   currentRoomChats: Array<any>;
   isCurrentRoomChatsLoading: boolean;
   sendingAMessage: boolean;
+  updatingChatList: boolean;
 };
 const initialState: ChatStateType = {
   chats: [],
@@ -23,6 +26,7 @@ const initialState: ChatStateType = {
   currentRoomChats: [],
   isCurrentRoomChatsLoading: false,
   sendingAMessage: false,
+  updatingChatList: true,
 };
 export default function ChatReducer(
   state: ChatStateType = initialState,
@@ -35,8 +39,12 @@ export default function ChatReducer(
       return {...state, sendingAMessage: true};
     case SEND_MESSAGE_ERROR:
       return {...state, sendingAMessage: false};
-    case SET_CHATS_LIST:
-      return {...state, chats: action.payload};
+    case SET_CHATS_LIST_REQUEST:
+      return {...state, chats: action.payload, updatingChatList: true};
+    case SET_CHATS_LIST_SUCCESS:
+      return {...state, updatingChatList: false};
+    case SET_CHATS_LIST_FAILED:
+      return {...state, updatingChatList: false};
     case GET_ROOM_CHATS_REQUEST:
       return {...state, isCurrentRoomChatsLoading: true};
     case GET_ROOM_CHATS_SUCCESS:

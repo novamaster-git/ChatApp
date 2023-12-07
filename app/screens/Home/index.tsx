@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  ActivityIndicator,
   Alert,
   FlatList,
   Modal,
@@ -16,11 +17,19 @@ import {useDispatch, useSelector} from 'react-redux';
 import NewChatIcon from '../../assets/images/svg/newChat.svg';
 import BlankSpacer from '../../components/BlankSpacer';
 import CustomButton from '../../components/CustomButton';
-import {makeaFriend} from '../../redux/actions/chat.actions';
+import {
+  makeaFriend,
+  setChatLists,
+  setChatListsSuccess,
+} from '../../redux/actions/chat.actions';
 import NoChatIcon from '../../assets/images/svg/noChats.svg';
+import {getChatRoomsByIds, subscribeToUserDetailsChanges} from '../../apis';
 function Home() {
   const dispatch = useDispatch();
   const username = useSelector((state: any) => state.UserReducer?.username);
+  const updatingChatList = useSelector(
+    (state: any) => state.ChatReducer?.updatingChatList,
+  );
   const isMakingAFriend: boolean = useSelector(
     (state: any) => state.ChatReducer?.isMakeingAFrined,
   );
@@ -29,8 +38,41 @@ function Home() {
   const chatLists: Array<any> = useSelector(
     (state: any) => state.ChatReducer?.chats,
   );
+
+  async function findRoomsById(data: any) {
+    try {
+      const roomsList = await getChatRoomsByIds(data); // gets the rooms from firebase by ids
+      dispatch(setChatLists(roomsList)); // sets the new chat list
+      dispatch(setChatListsSuccess());
+    } catch (error) {
+      Alert.alert('Something Went wrong');
+    }
+  }
+
+  useEffect(() => {
+    if (username) {
+      // checks and calles the callback when ever the room is updated
+      const unsubscribe = subscribeToUserDetailsChanges(username, data => {
+        // dispatch(setChatLists(data));
+        if (data?.chats === undefined) {
+          dispatch(setChatLists([])); // if there is no chat rooms then it sets the home screen chat list blank
+          dispatch(setChatListsSuccess());
+        } else {
+          // update my home screens chat list with new chatroom
+          findRoomsById(data?.chats);
+        }
+      });
+      return () => {
+        unsubscribe(); // to unsub the firebase snapshot listener
+      };
+    }
+  }, [username]);
   const newChatComponent = () => {
-    return <NewChatIcon height={wp(10)} width={wp(10)} color="white" />;
+    return isMakingAFriend ? (
+      <ActivityIndicator size={'large'} color={'white'} />
+    ) : (
+      <NewChatIcon height={wp(10)} width={wp(10)} color="white" />
+    );
   };
   const handleNewChat = () => {
     setModalVisible(true);
@@ -52,13 +94,18 @@ function Home() {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.componentContainer}>
-          <Text style={styles.headerTitle}>ChatApp</Text>
-          <Text style={styles.bottomText}>Welcome {username}</Text>
+        <View style={[styles.componentContainer, styles.flexRow]}>
+          <View style={styles.container}>
+            <Text style={styles.headerTitle}>ChatApp</Text>
+            <Text style={styles.bottomText}>Welcome {username}</Text>
+          </View>
+          <View>
+            {updatingChatList && <ActivityIndicator color={'#3F51B5'} />}
+          </View>
         </View>
 
         <View style={[styles.componentContainer, styles.container]}>
-          {chatLists ? (
+          {chatLists.length !== 0 ? (
             <FlatList
               data={chatLists}
               renderItem={({item}) => {
@@ -73,6 +120,7 @@ function Home() {
           )}
         </View>
         <TouchableOpacity
+          disabled={isMakingAFriend}
           style={styles.newChatButtonContainer}
           onPress={handleNewChat}>
           {newChatComponent()}
@@ -201,6 +249,10 @@ const styles = StyleSheet.create({
   modalTitleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  flexRow: {
+    flexDirection: 'row',
     alignItems: 'center',
   },
 });

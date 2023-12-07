@@ -13,13 +13,11 @@ import {
   sendMessageError,
   sendMessageRequested,
   sendMessageSuccess,
-  setChatLists,
 } from '../actions/chat.actions';
 import {
   addMessageToRoom,
   addRoomToUserChatList,
   createNewChatRoom,
-  getChatRoomsByIds,
   getRoomChatsFromFireStore,
   getUserDetailsByUsernameFromFirebase,
 } from '../../apis';
@@ -71,22 +69,6 @@ function* makeaFriend(action: any) {
       action.payload.friendsUsername,
       createdRoomRef?.id,
     );
-    // fetches my user details from firebase
-    const myUserDetails = yield call(
-      getUserDetailsByUsernameFromFirebase,
-      action.payload.myUsername,
-    );
-    if (myUserDetails?.chats === undefined) {
-      yield put(setChatLists([])); // if there is no chat rooms then it sets the home screen chat list blank
-    } else {
-      console.log(myUserDetails?.chats, 'myUserDetails?.chats');
-      // update my home screens chat list with new chatroom
-      const chatLists: Array<any> = yield call(
-        getChatRoomsByIds,
-        myUserDetails?.chats,
-      );
-      yield put(setChatLists(chatLists)); // sets the new chat list
-    }
     yield put(makingAFriendEnd());
   } catch (error) {
     yield put(makingAFriendEnd());

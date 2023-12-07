@@ -10,7 +10,7 @@ import {
   Text,
 } from 'react-native';
 
-import {wp} from '../../utils/responsive.util';
+import {hp, wp} from '../../utils/responsive.util';
 import ChatHeader from '../../components/ChatHeader';
 import SendIcon from '../../assets/images/svg/sent.svg';
 import BlankSpacer from '../../components/BlankSpacer';
@@ -38,11 +38,11 @@ function ChatRoom({route}: any) {
   const dispatch = useDispatch();
   useEffect(() => {
     if (roomId) {
-      console.log(roomId, 'ROOMID');
+      // checks and calles the callback when ever the room is updated
       const unsubscribe = subscribeToRoomChatChanges(roomId, data => {
         dispatch(
           getRoomChatsSuccess(
-            data.messages.map(item => {
+            data.messages.map((item: any) => {
               return {
                 ...item,
                 isReceived: item.sender !== username,
@@ -52,7 +52,7 @@ function ChatRoom({route}: any) {
         );
       });
       return () => {
-        unsubscribe();
+        unsubscribe(); // to unsub the firebase snapshot listener
       };
     }
   }, [roomId]);
@@ -78,7 +78,7 @@ function ChatRoom({route}: any) {
         name={roomName}
         imageUrl={`https://ui-avatars.com/api/?name=${roomName}&background=random`}
       />
-      {false ? (
+      {roomChats.length !== 0 ? (
         <View style={styles.container}>
           <FlatList data={roomChats} renderItem={messageItem} />
         </View>

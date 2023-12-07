@@ -7,8 +7,6 @@ async function getChatRoomsByIds(ids: Array<string>) {
       .collection('userChats')
       .where(firestore.FieldPath.documentId(), 'in', ids)
       .get();
-    // console.log(querySnapshot.docs.map(item => item._data));
-    // return querySnapshot.docs._data;
     return querySnapshot.docs.map(item => ({data: item?._data, id: item.id}));
   } catch (error) {
     console.log(error);
@@ -112,6 +110,33 @@ const subscribeToRoomChatChanges = (
   return unsubscribe;
 };
 
+const subscribeToUserDetailsChanges = (
+  username: string,
+  callback: (data: any) => void = () => {},
+) => {
+  const documentRef = firestore().collection(USERS).doc(username);
+
+  // Subscribe to real-time changes using onSnapshot
+  const unsubscribe = documentRef.onSnapshot(
+    documentSnapshot => {
+      if (documentSnapshot.exists) {
+        // Document exists, extract document data
+        const data: any = documentSnapshot.data();
+        callback(data);
+      } else {
+        // Document does not exist
+        callback(null);
+      }
+    },
+    error => {
+      console.error('Error subscribing to document changes:', error);
+    },
+  );
+
+  // Return an unsubscribe function to stop listening for changes
+  return unsubscribe;
+};
+
 async function addMessageToRoom(roomId: string, message: any) {
   try {
     const querySnapshot = firestore().collection(USERCHATS).doc(roomId);
@@ -133,4 +158,5 @@ export {
   getRoomChatsFromFireStore,
   subscribeToRoomChatChanges,
   addMessageToRoom,
+  subscribeToUserDetailsChanges,
 };

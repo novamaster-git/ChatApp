@@ -2,10 +2,13 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, TextInput, Alert} from 'react-native';
 import {hp, wp} from '../../utils/responsive.util';
 import BlankSpacer from '../../components/BlankSpacer';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {checkOrCreateUserDetailsFirebase} from '../../redux/actions/userDetails.action';
 import CustomButton from '../../components/CustomButton';
 function UserAuth(): JSX.Element {
+  const isUpdating = useSelector(
+    (state: any) => state?.UserReducer?.userDetailsUpdating,
+  );
   const [username, setUserName] = useState('');
   const dispatch = useDispatch();
   const handleSubmit = () => {
@@ -30,7 +33,11 @@ function UserAuth(): JSX.Element {
           value={username}
         />
         <BlankSpacer height={hp(5)} />
-        <CustomButton onPress={handleSubmit} title="Let's get started" />
+        <CustomButton
+          onPress={handleSubmit}
+          title="Let's get started"
+          isLoading={isUpdating}
+        />
       </View>
     </View>
   );

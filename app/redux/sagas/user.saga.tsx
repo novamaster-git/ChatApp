@@ -16,10 +16,8 @@ import {
 } from '../actions/userDetails.action';
 import {
   createNewUserInFirebase,
-  getChatRoomsByIds,
   getUserDetailsByUsernameFromFirebase,
 } from '../../apis';
-import {setChatLists} from '../actions/chat.actions';
 
 // all saga workers
 function* getAndSetUserNameFromLocalStorage() {
@@ -38,16 +36,6 @@ function* getAndSetUserNameFromLocalStorage() {
     if (userDetails === undefined) {
       yield put(setUserAuthStatusToLogout()); // if there is no detailsI then it will opens the login screen
       return;
-    }
-    if (userDetails?.chats === undefined) {
-      yield put(setChatLists([]));
-    } else {
-      console.log(userDetails?.chats, 'userDetails?.chats');
-      const chatLists: Array<any> = yield call(
-        getChatRoomsByIds,
-        userDetails?.chats,
-      );
-      yield put(setChatLists(chatLists));
     }
 
     // stores the user details to redux store
@@ -77,16 +65,7 @@ function* checkOrCreateUserDetailsFirebase(action: any) {
       // If there is no username exist then it creates new user in firebase
       yield call(createNewUserInFirebase, action.payload);
     }
-    if (userDetails?.chats === undefined) {
-      yield put(setChatLists([]));
-    } else {
-      console.log(userDetails?.chats, 'userDetails?.chats');
-      const chatLists: Array<any> = yield call(
-        getChatRoomsByIds,
-        userDetails?.chats,
-      );
-      yield put(setChatLists(chatLists));
-    }
+
     // sets the username to localstorage
     yield call(setLocalStorage, USER_NAME, action.payload);
     // sets the details to redux
