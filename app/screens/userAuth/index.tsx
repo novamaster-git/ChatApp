@@ -1,12 +1,5 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import {View, Text, StyleSheet, TextInput, Alert} from 'react-native';
 import {hp, wp} from '../../utils/responsive.util';
 import BlankSpacer from '../../components/BlankSpacer';
 import {useDispatch} from 'react-redux';
@@ -20,7 +13,7 @@ function UserAuth(): JSX.Element {
       Alert.alert('Invalid Input', 'Please enter an username');
       return;
     }
-    dispatch(checkOrCreateUserDetailsFirebase(username));
+    dispatch(checkOrCreateUserDetailsFirebase(username.toLowerCase()));
   };
   return (
     <View style={styles.container}>

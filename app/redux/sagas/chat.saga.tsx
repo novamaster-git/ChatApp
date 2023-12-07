@@ -2,7 +2,7 @@ import {put, takeEvery, all, call, takeLatest} from 'redux-saga/effects';
 import {
   GET_ROOM_CHATS_REQUEST_SAGA,
   MAKE_A_NEW_FRIEND,
-  SEND_MESSAGE,
+  SEND_MESSAGE_SAGA,
 } from '../../constants/reducersActions.const';
 import {
   getRoomChatsFailed,
@@ -10,10 +10,13 @@ import {
   getRoomChatsSuccess,
   makeingAFriendStarted,
   makingAFriendEnd,
-  sendMessage,
+  sendMessageError,
+  sendMessageRequested,
+  sendMessageSuccess,
   setChatLists,
 } from '../actions/chat.actions';
 import {
+  addMessageToRoom,
   addRoomToUserChatList,
   createNewChatRoom,
   getChatRoomsByIds,
@@ -23,8 +26,18 @@ import {
 import {Alert} from 'react-native';
 
 // worker
-function* incrementAsync(action: any) {
-  yield put(sendMessage(action.payload));
+function* sendMessageAsync(action: any) {
+  try {
+    yield put(sendMessageRequested());
+    yield call(
+      addMessageToRoom,
+      action.payload.roomId,
+      action.payload.messageData,
+    );
+    yield put(sendMessageSuccess());
+  } catch (error) {
+    yield put(sendMessageError(error));
+  }
 }
 function* makeaFriend(action: any) {
   // getting friends details from firebase
@@ -50,6 +63,12 @@ function* makeaFriend(action: any) {
     yield call(
       addRoomToUserChatList,
       action.payload.myUsername,
+      createdRoomRef?.id,
+    );
+    //adds the room id to friends userdetails chats list
+    yield call(
+      addRoomToUserChatList,
+      action.payload.friendsUsername,
       createdRoomRef?.id,
     );
     // fetches my user details from firebase
@@ -87,7 +106,7 @@ function* getChatRoomChats(action: any) {
 
 // watcher
 function* watchSendMessageAsync() {
-  yield takeEvery(SEND_MESSAGE, incrementAsync);
+  yield takeEvery(SEND_MESSAGE_SAGA, sendMessageAsync);
 }
 function* watchRoomChatRequestsAsync() {
   yield takeLatest(GET_ROOM_CHATS_REQUEST_SAGA, getChatRoomChats);

@@ -17,7 +17,7 @@ const messageItem: ListRenderItem<any> = ({item}) => {
         <Text style={styles.textMessage}>{item.message}</Text>
 
         <Text style={styles.clockText}>
-          {moment(item?.time).format('HH:MM a')}
+          {moment(item?.time).format('hh:mm a')}
         </Text>
       </View>
     </View>

@@ -6,13 +6,26 @@ import {
   MAKE_A_NEW_FRIEND,
   MAKING_A_NEW_FRIEND,
   MAKING_A_NEW_FRIEND_DONE,
-  SEND_MESSAGE,
+  SEND_MESSAGE_ERROR,
+  SEND_MESSAGE_REQUESTED,
+  SEND_MESSAGE_SAGA,
+  SEND_MESSAGE_SUCCCESS,
   SET_CHATS_LIST,
 } from '../../constants/reducersActions.const';
 
-export const sendMessage = (payload: any) => ({
-  type: SEND_MESSAGE,
+export const sendMessageSaga = (payload: any) => ({
+  type: SEND_MESSAGE_SAGA,
   payload,
+});
+export const sendMessageSuccess = () => ({
+  type: SEND_MESSAGE_SUCCCESS,
+});
+export const sendMessageError = (payload: any) => ({
+  type: SEND_MESSAGE_ERROR,
+  payload,
+});
+export const sendMessageRequested = () => ({
+  type: SEND_MESSAGE_REQUESTED,
 });
 export const setChatLists = (payload: any) => ({
   type: SET_CHATS_LIST,

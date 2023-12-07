@@ -112,6 +112,18 @@ const subscribeToRoomChatChanges = (
   return unsubscribe;
 };
 
+async function addMessageToRoom(roomId: string, message: any) {
+  try {
+    const querySnapshot = firestore().collection(USERCHATS).doc(roomId);
+    await querySnapshot.update({
+      messages: firestore.FieldValue.arrayUnion(message),
+    });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
 export {
   getChatRoomsByIds,
   getUserDetailsByUsernameFromFirebase,
@@ -120,4 +132,5 @@ export {
   addRoomToUserChatList,
   getRoomChatsFromFireStore,
   subscribeToRoomChatChanges,
+  addMessageToRoom,
 };

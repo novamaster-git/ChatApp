@@ -1,8 +1,9 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  ActivityIndicator,
+  Alert,
   FlatList,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -14,14 +15,21 @@ import SendIcon from '../../assets/images/svg/sent.svg';
 import BlankSpacer from '../../components/BlankSpacer';
 import messageItem from '../../components/messageItem';
 import {useDispatch, useSelector} from 'react-redux';
-// import {getRoomChatsRequestSaga} from '../../redux/actions/chat.actions';
 import {subscribeToRoomChatChanges} from '../../apis';
-import {getRoomChatsSuccess} from '../../redux/actions/chat.actions';
+import {
+  getRoomChatsSuccess,
+  sendMessageSaga,
+} from '../../redux/actions/chat.actions';
+import moment from 'moment';
 
 function ChatRoom({route}: any) {
+  const [userWrittenMessage, setUserWrittenMessage] = useState('');
   const roomId = route?.params.roomId;
   const roomName = route?.params.roomName;
   const username = useSelector((state: any) => state.UserReducer?.username);
+  const isSendingMessage = useSelector(
+    (state: any) => state.ChatReducer?.sendingAMessage,
+  );
   const roomChats = useSelector(
     (state: any) => state?.ChatReducer?.currentRoomChats,
   );
@@ -46,6 +54,22 @@ function ChatRoom({route}: any) {
       };
     }
   }, [roomId]);
+  const handleMessageSubmit = () => {
+    if (userWrittenMessage.length === 0) {
+      Alert.alert('Please enter a message to send');
+      return;
+    }
+    const dataToSend = {
+      roomId: roomId,
+      messageData: {
+        sender: username,
+        message: userWrittenMessage,
+        time: moment().format(),
+      },
+    };
+    dispatch(sendMessageSaga(dataToSend));
+    setUserWrittenMessage('');
+  };
   return (
     <View style={styles.container}>
       <ChatHeader
@@ -56,10 +80,22 @@ function ChatRoom({route}: any) {
         <FlatList data={roomChats ?? [1, 2, 3]} renderItem={messageItem} />
       </View>
       <View style={styles.chatPadContainer}>
-        <TextInput style={styles.chatInput} placeholder="Enter New Message" />
+        <TextInput
+          style={styles.chatInput}
+          placeholder="Enter New Message"
+          onChangeText={setUserWrittenMessage}
+          value={userWrittenMessage}
+        />
         <BlankSpacer width={wp(2)} />
-        <TouchableOpacity style={styles.sendButtonContainer}>
-          <SendIcon width={wp(10)} height={wp(10)} color="white" />
+        <TouchableOpacity
+          disabled={isSendingMessage}
+          style={styles.sendButtonContainer}
+          onPress={handleMessageSubmit}>
+          {isSendingMessage ? (
+            <ActivityIndicator size={'small'} color={'white'} />
+          ) : (
+            <SendIcon width={wp(10)} height={wp(10)} color="white" />
+          )}
         </TouchableOpacity>
       </View>
     </View>
