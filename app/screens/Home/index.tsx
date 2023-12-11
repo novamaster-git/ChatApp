@@ -14,7 +14,7 @@ import {
 import {wp} from '../../utils/responsive.util';
 import UserItem from '../../components/UserItem';
 import {useDispatch, useSelector} from 'react-redux';
-import {NewChatIcon, NoChatIcon} from '../../Theme/ImagesPath';
+import {CloseIcon, NewChatIcon, NoChatIcon} from '../../Theme/ImagesPath';
 import BlankSpacer from '../../components/BlankSpacer';
 import CustomButton from '../../components/CustomButton';
 import {
