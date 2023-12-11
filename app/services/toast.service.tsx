@@ -1,3 +1,4 @@
+import React from 'react';
 import {ActivityIndicator} from 'react-native';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {wp} from '../utils/responsive.util';
@@ -27,7 +28,7 @@ export function loadingMessage(
     onPress,
     type: 'success',
     style: {
-      backgroundColor: 'black',
+      backgroundColor: '#212121',
     },
     hideOnPress: false,
     icon: props => (

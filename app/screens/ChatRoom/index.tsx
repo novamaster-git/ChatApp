@@ -24,6 +24,8 @@ import {
 } from '../../redux/actions/chat.actions';
 import moment from 'moment';
 import {reverseArr} from '../../utils/array.util';
+import {generateAvatar} from '../../utils/avatar.uti';
+import {errorMessage} from '../../services/toast.service';
 
 function ChatRoom({route}: any) {
   const [userWrittenMessage, setUserWrittenMessage] = useState('');
@@ -61,6 +63,7 @@ function ChatRoom({route}: any) {
   const handleMessageSubmit = () => {
     if (userWrittenMessage.length === 0) {
       Alert.alert('Please enter a message to send');
+      errorMessage('Please enter a text to send', "Can't send blank messages");
       return;
     }
     const dataToSend = {
@@ -76,10 +79,7 @@ function ChatRoom({route}: any) {
   };
   return (
     <View style={styles.container}>
-      <ChatHeader
-        name={roomName}
-        imageUrl={`https://ui-avatars.com/api/?name=${roomName}&background=random`}
-      />
+      <ChatHeader name={roomName} imageUrl={generateAvatar(roomName)} />
       {roomChats.length !== 0 ? (
         <View style={styles.container}>
           <FlatList

@@ -2,6 +2,7 @@ import React, {PropsWithoutRef} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {wp} from '../utils/responsive.util';
+import {generateAvatar} from '../utils/avatar.uti';
 const UserItem: React.FC<PropsWithoutRef<{item: any}>> = ({item}: any) => {
   const navigator = useNavigation<any>();
   return (
@@ -16,7 +17,7 @@ const UserItem: React.FC<PropsWithoutRef<{item: any}>> = ({item}: any) => {
       <View style={styles.imageContainer}>
         <Image
           source={{
-            uri: `https://ui-avatars.com/api/?name=${item.data.RoomName}&background=random`,
+            uri: generateAvatar(item.data.RoomName),
           }}
           style={styles.avatar}
         />

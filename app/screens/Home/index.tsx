@@ -10,7 +10,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Config from 'react-native-config';
 
 import {wp} from '../../utils/responsive.util';
 import UserItem from '../../components/UserItem';

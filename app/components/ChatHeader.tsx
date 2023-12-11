@@ -18,10 +18,7 @@ function ChatHeader({name, imageUrl}: ChatHeaderProps): JSX.Element {
         <BackIcon height={wp(8)} width={wp(8)} />
       </TouchableOpacity>
       <View style={styles.imageContainer}>
-        <Image
-          source={{uri: imageUrl ?? 'https://i.pravatar.cc/500'}}
-          style={styles.avatar}
-        />
+        <Image source={{uri: imageUrl}} style={styles.avatar} />
       </View>
       <View style={styles.nameContainer}>
         <Text style={styles.nameText}>{name ?? 'null'}</Text>
