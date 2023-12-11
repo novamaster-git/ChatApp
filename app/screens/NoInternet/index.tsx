@@ -1,8 +1,9 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import NoInternetIcon from '../../assets/images/svg/noInternet.svg';
+
 import {hp, wp} from '../../utils/responsive.util';
 import BlankSpacer from '../../components/BlankSpacer';
+import {NoInternetIcon} from '../../Theme/ImagesPath';
 function NoInternet(): JSX.Element {
   return (
     <View style={styles.container}>

@@ -12,12 +12,12 @@ import {
 
 import {wp} from '../../utils/responsive.util';
 import ChatHeader from '../../components/ChatHeader';
-import SendIcon from '../../assets/images/svg/sent.svg';
+import {SendIcon} from '../../Theme/ImagesPath';
 import BlankSpacer from '../../components/BlankSpacer';
 import messageItem from '../../components/messageItem';
 import {useDispatch, useSelector} from 'react-redux';
 import {subscribeToRoomChatChanges} from '../../apis';
-import NoMessagesIcon from '../../assets/images/svg/noMessages.svg';
+import {NoMessagesIcon} from '../../Theme/ImagesPath';
 import {
   getRoomChatsSuccess,
   sendMessageSaga,

@@ -1,8 +1,9 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {wp} from '../utils/responsive.util';
-import BackIcon from '../assets/images/svg/back.svg';
+
 import {useNavigation} from '@react-navigation/native';
+import {BackIcon} from '../Theme/ImagesPath';
 export type ChatHeaderProps = {
   name: string;
   imageUrl: string;

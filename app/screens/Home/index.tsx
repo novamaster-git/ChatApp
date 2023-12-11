@@ -10,11 +10,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import CloseIcon from '../../assets/images/svg/close.svg';
+
 import {wp} from '../../utils/responsive.util';
 import UserItem from '../../components/UserItem';
 import {useDispatch, useSelector} from 'react-redux';
-import NewChatIcon from '../../assets/images/svg/newChat.svg';
+import {NewChatIcon, NoChatIcon} from '../../Theme/ImagesPath';
 import BlankSpacer from '../../components/BlankSpacer';
 import CustomButton from '../../components/CustomButton';
 import {
@@ -22,7 +22,7 @@ import {
   setChatLists,
   setChatListsSuccess,
 } from '../../redux/actions/chat.actions';
-import NoChatIcon from '../../assets/images/svg/noChats.svg';
+
 import {getChatRoomsByIds, subscribeToUserDetailsChanges} from '../../apis';
 function Home() {
   const dispatch = useDispatch();
