@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Config from 'react-native-config';
 
 import {wp} from '../../utils/responsive.util';
 import UserItem from '../../components/UserItem';
@@ -38,7 +39,6 @@ function Home() {
   const chatLists: Array<any> = useSelector(
     (state: any) => state.ChatReducer?.chats,
   );
-
   useEffect(() => {
     async function findRoomsById(data: any) {
       try {
@@ -53,7 +53,6 @@ function Home() {
       // checks and calles the callback when ever the room is updated
       const unsubscribe = subscribeToUserDetailsChanges(username, data => {
         // dispatch(setChatLists(data));
-        console.log(data?.chats, 'KOLS');
         if (data?.chats.length === 0) {
           dispatch(setChatLists([])); // if there is no chat rooms then it sets the home screen chat list blank
           dispatch(setChatListsSuccess());

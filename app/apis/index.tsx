@@ -1,6 +1,7 @@
 import firestore from '@react-native-firebase/firestore';
 import {USERCHATS, USERS} from '../constants/firestore.key';
 import CustomError from '../../customClasses/CustomError.class';
+import {errorLog} from '../services/logger.service';
 async function getChatRoomsByIds(ids: Array<string>) {
   try {
     const querySnapshot = await firestore()
@@ -9,7 +10,7 @@ async function getChatRoomsByIds(ids: Array<string>) {
       .get();
     return querySnapshot.docs.map(item => ({data: item?._data, id: item.id}));
   } catch (error) {
-    console.log(error);
+    errorLog(error);
   }
 }
 async function getUserDetailsByUsernameFromFirebase(username: string) {
@@ -65,7 +66,7 @@ async function addRoomToUserChatList(username: string, roomId: string) {
       chats: firestore.FieldValue.arrayUnion(roomId),
     });
   } catch (error) {
-    console.log(error);
+    errorLog(error);
   }
 }
 async function getRoomChatsFromFireStore(roomId: string) {
@@ -74,7 +75,7 @@ async function getRoomChatsFromFireStore(roomId: string) {
     const result = await querySnapshot.get();
     return result?._data;
   } catch (error) {
-    console.log(error);
+    errorLog(error);
     throw error;
   }
 }
@@ -141,7 +142,7 @@ async function addMessageToRoom(roomId: string, message: any) {
       messages: firestore.FieldValue.arrayUnion(message),
     });
   } catch (error) {
-    console.log(error);
+    errorLog(error);
     throw error;
   }
 }
