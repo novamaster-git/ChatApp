@@ -129,6 +129,7 @@ function Home() {
         </TouchableOpacity>
       </View>
       <Modal
+        animationType="slide"
         visible={modalVisible}
         onRequestClose={() => {
           setFriendsUsername('');

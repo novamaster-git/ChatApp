@@ -5,8 +5,8 @@ import ChatRoom from '../screens/ChatRoom';
 import UserAuth from '../screens/userAuth';
 import SplashScreen from '../screens/Splash';
 import {useDispatch, useSelector} from 'react-redux';
-import {Text} from 'react-native-svg';
 import {checkAndUpdateUserAuthStatus} from '../redux/actions/userDetails.action';
+import Error from '../screens/Error';
 function AppStack() {
   const Stack = createNativeStackNavigator();
   return (
@@ -55,7 +55,7 @@ function NavComponent() {
   } else if (authStatus === 'LOGGED_IN') {
     return <AppStack />;
   } else {
-    return <Text>Error</Text>;
+    return <Error />;
   }
 }
 export default NavComponent;
