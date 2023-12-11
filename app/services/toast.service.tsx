@@ -43,7 +43,7 @@ export function loadingMessage(
 }
 export function errorMessage(
   title: string,
-  desc: string,
+  desc?: string,
   duration: number = 1850,
   onPress: () => void = () => {},
 ): void {
@@ -57,7 +57,7 @@ export function errorMessage(
 }
 export function infoMessage(
   title: string,
-  desc: string,
+  desc?: string,
   duration: number = 1850,
   onPress: () => void = () => {},
 ): void {

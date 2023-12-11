@@ -5,6 +5,7 @@ import NoMessagesIcon from '../assets/images/svg/noMessages.svg';
 import CloseIcon from '../assets/images/svg/close.svg';
 import NewChatIcon from '../assets/images/svg/newChat.svg';
 import NoChatIcon from '../assets/images/svg/noChats.svg';
+import ErrorIcon from '../assets/images/svg/error.svg';
 export {
   NoInternetIcon,
   BackIcon,
@@ -13,4 +14,5 @@ export {
   CloseIcon,
   NewChatIcon,
   NoChatIcon,
+  ErrorIcon,
 };

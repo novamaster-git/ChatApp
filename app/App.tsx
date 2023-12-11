@@ -6,6 +6,9 @@ import NavComponent from './stack';
 import {Provider} from 'react-redux';
 import store from './redux/store';
 import NoInternet from './screens/NoInternet';
+import ErrorBoundary from 'react-native-error-boundary';
+import {errorLog} from './services/logger.service';
+import Error from './screens/Error';
 function App() {
   const [isInternetAvailable, setIsInternetAvailable] = useState<
     boolean | null
@@ -24,9 +27,15 @@ function App() {
   return (
     <>
       <Provider store={store}>
-        <NavigationContainer>
-          <NavComponent />
-        </NavigationContainer>
+        <ErrorBoundary
+          FallbackComponent={Error}
+          onError={error => {
+            errorLog(error);
+          }}>
+          <NavigationContainer>
+            <NavComponent />
+          </NavigationContainer>
+        </ErrorBoundary>
       </Provider>
       <FlashMessage position={'top'} />
       {/* Blocks the user if there is no internet */}

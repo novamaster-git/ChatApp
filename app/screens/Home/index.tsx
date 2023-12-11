@@ -24,6 +24,8 @@ import {
 } from '../../redux/actions/chat.actions';
 
 import {getChatRoomsByIds, subscribeToUserDetailsChanges} from '../../apis';
+import {errorLog} from '../../services/logger.service';
+import {errorMessage} from '../../services/toast.service';
 function Home() {
   const dispatch = useDispatch();
   const username = useSelector((state: any) => state.UserReducer?.username);
@@ -45,7 +47,8 @@ function Home() {
         dispatch(setChatLists(roomsList)); // sets the new chat list
         dispatch(setChatListsSuccess());
       } catch (error) {
-        Alert.alert('Something Went wrong');
+        errorLog(error);
+        errorMessage('SomeThing Went Wrong', 'LOL');
       }
     }
     if (username) {
