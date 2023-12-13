@@ -61,7 +61,3 @@ export const getRoomChatsFailed = (payload: any) => ({
   type: GET_ROOM_CHATS_FAILED,
   payload,
 });
-export const getRoomChatsRequestSaga = (payload: any) => ({
-  type: GET_ROOM_CHATS_REQUEST_SAGA,
-  payload,
-});

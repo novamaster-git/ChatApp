@@ -26,6 +26,10 @@ import {
 import {getChatRoomsByIds, subscribeToUserDetailsChanges} from '../../apis';
 import {errorLog} from '../../services/logger.service';
 import {errorMessage} from '../../services/toast.service';
+import {
+  START_USER_CHATLIST_UPDATE_LISTNER,
+  STOP_USER_CHATLIST_UPDATE_LISTNER,
+} from '../../constants/reducersActions.const';
 function Home() {
   const dispatch = useDispatch();
   const username = useSelector((state: any) => state.UserReducer?.username);
@@ -41,33 +45,16 @@ function Home() {
     (state: any) => state.ChatReducer?.chats,
   );
   useEffect(() => {
-    async function findRoomsById(data: any) {
-      try {
-        const roomsList = await getChatRoomsByIds(data); // gets the rooms from firebase by ids
-        dispatch(setChatLists(roomsList)); // sets the new chat list
-        dispatch(setChatListsSuccess());
-      } catch (error) {
-        errorLog(error);
-        errorMessage('SomeThing Went Wrong', 'LOL');
-      }
-    }
     if (username) {
-      // checks and calles the callback when ever the room is updated
-      const unsubscribe = subscribeToUserDetailsChanges(username, data => {
-        // dispatch(setChatLists(data));
-        if (data?.chats.length === 0) {
-          dispatch(setChatLists([])); // if there is no chat rooms then it sets the home screen chat list blank
-          dispatch(setChatListsSuccess());
-        } else {
-          // update my home screens chat list with new chatroom
-          findRoomsById(data?.chats);
-        }
-      });
+      // Todo: need to create actions for this dispatch
+      dispatch({type: START_USER_CHATLIST_UPDATE_LISTNER, payload: username}); // startes the firebase chatlist update listner
       return () => {
-        unsubscribe(); // to unsub the firebase snapshot listener
+        // Todo: need to create actions for this dispatch
+        dispatch({type: STOP_USER_CHATLIST_UPDATE_LISTNER}); // stops the firebase chatlist update listner ! to prevent memory leak
       };
     }
-  }, [username, dispatch]);
+  }, [username]);
+
   // new chat creation button ui
   const newChatComponent = () => {
     return isMakingAFriend ? (
@@ -126,7 +113,9 @@ function Home() {
         <TouchableOpacity
           disabled={isMakingAFriend}
           style={styles.newChatButtonContainer}
-          onPress={handleNewChat}>
+          onPress={() => {
+            handleNewChat();
+          }}>
           {newChatComponent()}
         </TouchableOpacity>
       </View>
